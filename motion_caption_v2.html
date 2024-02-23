@@ -1,0 +1,925 @@
+<!doctype html>
+
+
+<html lang="en">
+
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- <script src="https://assets.crowd.aws/crowd-html-elements.js"></script> -->
+  <!-- <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet" /> -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+  <!-- Open internal style sheet -->
+
+
+
+  <meta charset="utf-8">
+  <title>Describe the differences between two motion sequences</title>
+
+  <style type="text/css">
+    /* CSS styles */
+    .card-header {
+      align-items: center;
+      display: flex;
+      text-align: center;
+      /* justify-content: space-between; */
+      cursor: pointer;
+    }
+
+    ul > li {
+      margin: 0.5em 0;
+    }
+
+    .collapse-text {
+      margin-left: 5px;
+    }
+
+    .card-body {
+      display: flex;
+    }
+
+    .collapse-text {
+      margin-left: 5px;
+      color: #fff;
+      /* Change the color here */
+    }
+
+    #collapseButton {
+      width: 150px;
+      /* Adjust the width as needed */
+      height: 40px;
+      /* Adjust the height as needed */
+      font-size: 16px;
+      /* Adjust the font size as needed */
+      text-align: center;
+      color: #000;
+    }
+
+    #videoContainer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .videoWrapper {
+      margin: 10px;
+    }
+
+    #submitButton {
+      width: 200px;
+      /* Adjust the width as needed */
+      height: 2em;
+      /* Adjust the height as needed */
+      font-size: 20px;
+      /* Adjust the font size as needed */
+      text-align: center;
+    }
+
+    #buttonNext,
+    #buttonSkip {
+      width: 200px;
+      height: 30px;
+      font-size: 16px;
+    }
+
+    button:disabled,
+    #submitButton:disabled {
+      background-color: #dddddd;
+      color: #aaaaaa;
+    }
+
+    #instructionBody table {
+      font-size: 14px;
+    }
+
+    #instructionBody table caption {
+      text-align: left;
+      padding: 0 0 5px 0;
+    }
+
+    #CategoryInputs {
+      display: block;
+      margin-top: 10px;
+    }
+
+    .content {
+      margin-bottom: 15px;
+    }
+
+    .radio:first-of-type {
+      margin-top: -5px;
+    }
+
+    img {
+      transition: -webkit-transform 0.25s ease;
+      transition: transform 0.25s ease;
+    }
+
+    img:active {
+      -webkit-transform: scale(2);
+      transform: scale(2);
+    }
+
+    .btn btn-default {
+      display: inline-block;
+      margin: 10px;
+      /* space between buttons */
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .container2 {
+      /* Container holding the image and the text */
+      position: relative;
+      text-align: center;
+      color: black;
+    }
+
+    .container3 {
+      /* Container holding the image and the text */
+      position: relative;
+      text-align: center;
+      color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .bottom-centered {
+      position: absolute;
+      bottom: 0%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .bottom-centered2 {
+      position: absolute;
+      top: 0%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .caption-vid p {
+      font-size: 30px !important;
+      /* Adjust the font size as needed */
+    }
+  </style>
+</head>
+
+<!-- Title and instructions for study -->
+
+<body>
+
+  <div>
+    <div>
+      <center>
+        <h3>Edit the motion: Instruct changes to the <font color="red">Wrong motion (red)</font> to match the <font color="green">Correct motion (green)</font>.</h3>
+
+        <!-- <h2 style="margin: 0.5em;">Describe the differences between two motion sequences</h2> -->
+      </center>
+
+      <div class="card">
+        <div class="card-header bg-primary collapseTrigger d-flex justify-content-center"
+          onclick="toggleInstructions()">
+          <b style="margin-right: 20px;">Task Instructions:</b>
+          <button class="collapse-btn" id="collapseButton">Click to expand</button>
+        </div>
+        <div class="card-body" id="instructionBody" style="display: none;">
+          <center>
+            <p style="color: blue"><u>Please read the instructions carefully, otherwise we will <b>reject</b> your answer.</u></p>
+          </center>
+          <ol style="margin-left: 3em;">
+            <!-- TASK -->
+            <!-- <br> -->
+            <span style="margin-left: -1em;"><b><u>THE MOTION EDITING TASK:</u></b></span>
+
+            <li>Carefully <b>watch the video</b> displaying the two human motions overlaid: <font color="red">Wrong motion (red)</font>
+              and <font color="green">Correct motion (green)</font>.
+              <br>You can also click the <i>Show separate Wrong and Correct motions</i> button, to see the videos of the two motions separately.</li> 
+              To perform the task, at least the first (overlaid) video should be played from start to finish.</li>
+
+            <li>Your task is to <b>write instructions</b> to the person performing the <font color="red">Wrong motion</font>, so that the movement becomes the <font color="green">Correct motion</font>.</li>
+
+            <li>If the two motions are too similar (no visible difference) or too different (difficult to describe the difference), you should <b>Skip video</b> with the button on the right side.</li>
+
+            <li>Press the &quot;Next video&quot; button after each task and press the &quot;SUBMIT&quot; button after you have finished all tasks.</li>
+
+            <!-- IMPORTANT -->
+            <br>
+            <span style="margin-left: -1em;"><b><u>IMPORTANT:</u></b></span>
+
+            <li>Check the <b>example annotations</b> below <b>before</b> starting the task.</li>
+
+            <li>The text should refer to the <font color="red">Wrong motion</font> with words such as &quot;<b>instead</b>&quot;, &quot;<b>same/opposite hand/leg</b>&quot;, &quot;<b>higher/lower</b>&quot;, &quot;<b>faster/slower</b>&quot;. <b>Do NOT</b> just describe the <font color="green">Correct motion</font> without the need to look at the <font color="red">Wrong motion</font>.</li>
+
+            <li><b>Give commands</b> by using imperative verbs such as &quot;raise the leg higher&quot;. <b>Do NOT</b> use the words &quot;<s><font color="red">wrong</font></s>&quot;, &quot;<s><font color="green">correct</font></s>&quot;, &quot;<s>this motion</s>&quot;, &quot;<s>you</s>&quot;, or gendered words such as &quot;<s>he/his</s>&quot;.</li>
+
+            <li>The difference should be described even if a small part of the body moves differently. If you skip motions because they are too similar, the two motions must be almost identical in the overlaid video.</li>
+
+            <li>If the difference between the two videos are too complex to describe, it is a sign that you should skip these videos. </li>
+            <li>For the above reason, answers should be about 3-12 words, but not longer than 15 words.</li>
+          </ol>
+          <hr size="16" noshade width="80%" align="center" color="blue">
+          <center>
+            <p style="color: blue">Example annnotations are below:</p>
+
+          </center>
+          <center>
+            <div style="margin-top: 1em;">
+              <span>modify video playback speed:</span>
+              <button class="playbackExampleSpeed" id="playbackExampleSpeed_0.25"
+                onclick="changeExampleSpeed(0.25)">0.25</button>
+              <button class="playbackExampleSpeed" id="playbackExampleSpeed_0.5"
+                onclick="changeExampleSpeed(0.5)">0.5</button>
+              <button class="playbackExampleSpeed" id="playbackExampleSpeed_0.75"
+                onclick="changeExampleSpeed(0.75)">0.75</button>
+              <button class="playbackExampleSpeed" id="playbackExampleSpeed_1" onclick="changeExampleSpeed(1)"
+                style="background-color: #ADD8E6;">1
+                <i>(default)</i></button>
+              <button class="playbackExampleSpeed" id="playbackExampleSpeed_1.25"
+                onclick="changeExampleSpeed(1.25)">1.25</button>
+              <button class="playbackExampleSpeed" id="playbackExampleSpeed_1.5"
+                onclick="changeExampleSpeed(1.5)">1.5</button>
+              <button class="playbackExampleSpeed" id="playbackExampleSpeed_2"
+                onclick="changeExampleSpeed(2)">2</button>
+              <button class="playbackExampleSpeed" id="playbackExampleSpeed_3"
+                onclick="changeExampleSpeed(3)">3</button>
+            </div>
+            <div id="examplesContainer"></div>
+          </center>
+
+          <div class="card-header bg-primary collapseTrigger d-flex justify-content-center"
+            onclick="toggleInstructions()">
+            <button class="collapse-btn" id="collapseButton" style="width: 300px">Click to collapse task
+              instructions</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- <center>
+        <br>
+        <p>Similarity Score:
+          <span id="sim_score" style="font-size: 20px; color: rgb(0, 0, 0); font-weight: bold;"></span>
+        </p>
+      </center> -->
+
+      <center>
+        <div style="margin-top: 1em;">
+          <span>modify video playback speed:</span>
+          <button class="playbackSpeed" id="playbackSpeed_0.25" onclick="changeSpeed(0.25)">0.25</button>
+          <button class="playbackSpeed" id="playbackSpeed_0.5" onclick="changeSpeed(0.5)">0.5</button>
+          <button class="playbackSpeed" id="playbackSpeed_0.75" onclick="changeSpeed(0.75)">0.75</button>
+          <button class="playbackSpeed" id="playbackSpeed_1" onclick="changeSpeed(1)"
+            style="background-color: #ADD8E6;">1
+            <i>(default)</i></button>
+          <button class="playbackSpeed" id="playbackSpeed_1.25" onclick="changeSpeed(1.25)">1.25</button>
+          <button class="playbackSpeed" id="playbackSpeed_1.5" onclick="changeSpeed(1.5)">1.5</button>
+          <button class="playbackSpeed" id="playbackSpeed_2" onclick="changeSpeed(2)">2</button>
+          <button class="playbackSpeed" id="playbackSpeed_3" onclick="changeSpeed(3)">3</button>
+        </div>
+
+        <div id="videoContainer">
+ 
+          <div class="videoWrapper">
+            <div style="margin-bottom: 0px;">
+              <video id="video3" style='width: 30vw' controls>
+                <source src="" type="video/mp4">Your browser does not support the video tag.
+              </video>
+            </div>
+            <div style="font-size: 18px;">
+              <p><b><font color="red">Wrong</font> & <font color="green">Correct</font></b> motions overlaid</p>
+            </div>
+          </div>
+
+          
+
+          <div id="videoContainer" class="videoWrapper firstTwoVideosWrapper" hidden>
+            <div class="videoWrapper">
+              <div style="margin-bottom: 0px;">
+                <video id="video1" style='width: 30vw' controls>
+                  <source src="" type="video/mp4">Your browser does not support the video tag.
+                </video>
+              </div>
+              <div style="font-size: 18px;"> <!-- Removed class="caption-vid" because it was too big --> 
+                <p><b><font color="red">Wrong motion</font></b></p>
+              </div>
+            </div>
+            <div class="videoWrapper">
+              <div style="margin-bottom: 0px;">
+                <video id="video2" style='width: 30vw' style="margin-bottom: 20px;" controls>
+                  <source src="" type="video/mp4">Your browser does not support the video tag.
+                </video>
+              </div>
+              <div style="font-size: 18px;">
+                <p><b><font color="green">Correct motion</font></b></p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <button id="toggleSeparateButton" onclick="toggleSeparate()">Show separate Wrong and Correct motions</button>
+        <br><br>
+
+
+        <div id="mustRead">
+          <p style="color: red">You must first <b>expand</b> and read the <b>Task Instructions</b> above to proceed! Check the <b>example annotations</b> there before starting the task.</p>
+        </div>
+
+      </center>
+      
+      <div class="container center">
+
+
+        <input type="hidden" id="video_urls" name="video_urls" value="${video_urls}">
+        <!-- NOTE: does nothing -->
+        <!-- <input type="hidden" id="action_label" name="action_label" value=""> -->
+
+
+        <div class="col-md-8" style="text-align: left;">
+
+          <div style="text-align: center;">
+            <b>Edit the motion:</b> Instruct changes to the <font color="red">Wrong motion (red)</font> to match the <font color="green">Correct motion (green)</font> in a concise way (about 3-12 words, see example descriptions).
+          </div>
+          <div style="text-align: center;">
+            <div>
+              <textarea id="textInput" style="font-size: 18px; width: 70%; height: 80px; padding: 5px; line-height: 20px; text-align: left; overflow-y: auto; white-space: pre-wrap;" placeholder="Type the instruction to the person performing the Wrong motion, so that the movement becomes the Correct motion. Examples: jump higher, lower the right hand, ..." disabled></textarea>
+            </div>
+            <p id="text_too_long" style="color: red; display: none;"></p>
+            <button type="button" value="1" id="buttonNext" onclick="progress()" disabled> Next video </button>
+            <br>
+            <p id="counter"> </p>
+            <input id="submitButton" type="submit" value="SUBMIT" disabled>
+          </div>
+
+          <b>Remember:</b>
+          <ul >
+            <!--Copy-paste from above-->
+            <li style="margin: 0; padding: 0;">The text should refer to the <font color="red">Wrong motion</font> with words such as &quot;<b>instead</b>&quot;, &quot;<b>same/opposite hand/leg</b>&quot;, &quot;<b>higher/lower</b>&quot;, &quot;<b>faster/slower</b>&quot;. <b>Do NOT</b> just describe the <font color="green">Correct motion</font> without the need to look at the <font color="red">Wrong motion</font>.</li>
+
+            <li style="margin: 0; padding: 0;"><b>Give commands</b> by using imperative verbs such as &quot;raise the leg higher&quot;. <b>Do NOT</b> use the words &quot;<s><font color="red">wrong</font></s>&quot;, &quot;<s><font color="green">correct</font></s>&quot;, &quot;<s>this motion</s>&quot;, &quot;<s>you</s>&quot;, or gendered words such as &quot;<s>he/his</s>&quot;.</li>
+            <li>If the difference between the two videos become too complex to describe, it is a sign that you should skip these videos.</li>
+          </ul>
+        
+        </div>
+
+
+        <div class="col-md-6" style="text-align: left;">
+          <br>
+          <b>Skip video:</b>
+          <!-- <button type="button" value="1" id="resetSkipButton" onclick="resetSkip()">Clear subform below</button> -->
+          <!-- make button look like link -->
+          <br><button type="button" value="1" id="resetSkipButton" onclick="resetSkip()" style="background-color: transparent; border: none; color: blue; text-decoration: underline; padding: 0; font: inherit; cursor: pointer;">Clear subform below</button>
+          
+          <br>
+          <div id="skipVideoDiv"> <!--TODO: bottom-align confirm reason button with textbox-->
+            Reason for skipping:
+            <br>
+            <input type="radio" id="skipRadio1" name="skipRadio" value="too similar" disabled> 2 motions are too similar - almost identical
+            <br>
+            <input type="radio" id="skipRadio2" name="skipRadio" value="too different" disabled> 2 motions are too different - difficult to describe the difference
+            <br>
+            <input type="radio" id="skipRadio3" name="skipRadio" value="other" disabled> other:
+            <input type="text" id="skipText" name="skipText" value="" placeholder="Please specify - use rarely" style="width: 40%;"
+              disabled>
+            <br><br>
+            <button type="button" value="1" id="buttonSkipDo" onclick="progress(true)" disabled> Confirm reason & Skip
+              video
+            </button>
+            <br><br>
+          </div>
+        </div>
+
+        <input id="submitValues" name="submitValues" type="hidden" value="">
+        <input id="submitSkipReason" name="submitSkipReason" type="hidden" value="">
+      </div>
+
+      <br>
+    </div>
+
+
+
+    <script>
+      // TODO: hardcoded urls for testing - to be commented out for the real HIT
+      //var videoUrlsInput = 'https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_013454_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_011724_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_013454_0_120-011724_0_120.mp4#0.976;https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_005844_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_005721_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_005844_0_120-005721_0_120.mp4#0.994;https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_005844_120_240.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_007961_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_005844_120_240-007961_0_120.mp4#0.97;https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_001575_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_012030_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_001575_0_120-012030_0_120.mp4#0.983;https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_014431_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_012998_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_014431_0_120-012998_0_120.mp4#0.995;https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_014431_120_240.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_007491_120_240.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_014431_120_240-007491_120_240.mp4#0.995;https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_002706_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_001951_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_002706_0_120-001951_0_120.mp4#0.989;https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_009559_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_004947_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_009559_0_120-004947_0_120.mp4#0.988;https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_003364_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_004868_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_003364_0_120-004868_0_120.mp4#0.99;https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_007117_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_007181_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_007117_0_120-007181_0_120.mp4#0.977;https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_011589_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_007607_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_011589_0_120-007607_0_120.mp4#0.993;https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_001278_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_012034_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_001278_0_120-012034_0_120.mp4#0.976;https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_004075_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_009596_120_240.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_004075_0_120-009596_120_240.mp4#0.976;https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_005392_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_007668_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_005392_0_120-007668_0_120.mp4#0.994;https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_002105_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_000511_0_120.mp4#https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_002105_0_120-000511_0_120.mp4#0.982'
+
+      // IMPORTANT TODO: the next 2 lines should be active to be able to read the HITlist csv
+      var videoUrlsInput = document.getElementById("video_urls").value;
+      var videoUrls = videoUrlsInput.split(';');
+
+      var inputElement = document.getElementById('textInput');
+
+      // NOTE: does nothing
+      // var placeholderElement = document.getElementById('placeholder');
+      // inputElement.addEventListener('input', function () {
+      //   placeholderElement.style.display = inputElement.value ? 'none' : 'block';
+      // });
+
+
+      // var currentVideoIndex = 1;
+      // function nextVideos() {
+      //   if (currentVideoIndex < videoUrls1.length && currentVideoIndex < videoUrls2.length) {
+      //     var video1Url = videoUrls1[currentVideoIndex];
+      //     var video2Url = videoUrls2[currentVideoIndex];
+      //
+      //     document.getElementById("video1_url").value = video1Url;
+      //     document.getElementById("video2_url").value = video2Url;
+      //     document.getElementById("action_label").value = document.getElementById("action_label").value;
+      //
+      //     document.getElementById("video1").setAttribute("src", video1Url);
+      //     document.getElementById("video2").setAttribute("src", video2Url);
+      //
+      //     document.getElementById("video1").pause();
+      //     document.getElementById("video2").pause();
+      //
+      //     currentVideoIndex++;
+      //   } else {
+      //
+      //       currentVideoIndex = 0;
+      //       saveTextInputs();
+      //   }
+      // }
+      var currentVideoIndex = 1;
+      const maxVideoNumber = videoUrls.length;
+      // Use the video URLs as needed in your code
+      document.getElementById('video1').src = videoUrls[0].split('#')[0];
+      document.getElementById('video2').src = videoUrls[0].split('#')[1];
+      document.getElementById('video3').src = videoUrls[0].split('#')[2];
+      // document.getElementById("sim_score").innerHTML = videoUrls[0].split('#')[3];
+
+      document.getElementById("counter").innerHTML = (maxVideoNumber - currentVideoIndex) + " videos left" //displays how many videos are left until the end + counts down
+
+
+      // bookkeeping of unopened/unread instruction modules
+      var instructionsRead = false;
+
+      //waits for the video to end to enable input
+      // Set up variables to track the completion state of the videos
+      // let videoACompleted = false;
+      // let videoBCompleted = false;
+      let videoCCompleted = false;
+
+      // Function to check if both videos have completed
+      function checkBothVideosCompleted() {
+        if (/*videoACompleted && videoBCompleted &&*/ videoCCompleted) {
+          checkRatingDone();
+        }
+      }
+      function createEventListeners() {
+        /*document.getElementById("video1").addEventListener('ended', function () {
+          videoACompleted = true;
+          checkBothVideosCompleted();
+        }, false);
+        document.getElementById("video2").addEventListener('ended', function () {
+          videoBCompleted = true;
+          checkBothVideosCompleted();
+        }, false);*/
+        document.getElementById("video3").addEventListener('ended', function () {
+          videoCCompleted = true;
+          checkBothVideosCompleted();
+        }, false);
+      }
+      createEventListeners();
+
+      function resetSkip() {
+        event.preventDefault();
+        document.querySelector('#skipText').value = "";
+        $('input[type="radio"]').prop('checked', false);
+        document.getElementById('buttonSkipDo').disabled = true;
+      }
+
+      // Define a global array to store the text inputs
+      var textInputs = [];
+
+      function toggleSeparate() {
+        event.preventDefault();
+
+        var x = document.getElementsByClassName("firstTwoVideosWrapper")[0];
+        var z = document.getElementById("toggleSeparateButton");
+        if (x.hidden == true) {
+          // set hidden to false
+          x.hidden = false;
+          z.innerHTML = "Hide separate Wrong and Correct motions";
+        } else {
+          x.hidden = true;
+          z.innerHTML = "Show separate Wrong and Correct motions";
+        }
+      }
+
+      function checkRatingDone() {
+        $('#textInput').prop('disabled', false);
+        $('#textInput').on("change keyup paste input", function () {
+          var textinput = document.querySelector('#textInput').value;
+          if (instructionsRead == false) {
+            document.getElementById('buttonNext').disabled = true;
+          } else {
+            if (textinput == "") { //number defines how many radio buttons to click before displaying the next button
+              document.getElementById('buttonNext').disabled = true;
+            } else {
+              if (textinput.split(' ').length > 15) {
+                document.getElementById('buttonNext').disabled = true;
+                document.getElementById('text_too_long').textContent = "Answer should not be longer than 15 words. Try to simplify it, or skip the video if it is too complex to describe the differences.";
+                document.getElementById('text_too_long').style.display = "block";
+              }
+              else {
+                document.getElementById('buttonNext').disabled = false;
+                document.getElementById('text_too_long').style.display = "none";
+              }
+            }
+          }
+        });
+
+        $('input[type="radio"]').prop('disabled', false);
+        $('#skipText').prop('disabled', false);
+        $('input[type="radio"], #skipText').on("change keyup paste input", function () {
+          var radios = document.querySelectorAll('input[type="radio"]:checked');
+          var textinput = document.querySelector('#skipText').value;
+          if (instructionsRead == false) {
+            document.getElementById('buttonSkipDo').disabled = true;
+          } else {
+            if (radios.length == 1) {
+              if (radios[0].value == "other") {
+                if (textinput == "") {
+                  document.getElementById('buttonSkipDo').disabled = true;
+                } else {
+                  document.getElementById('buttonSkipDo').disabled = false;
+                }
+              } else {
+                document.getElementById('buttonSkipDo').disabled = false;
+              }
+            } else {
+              document.getElementById('buttonSkipDo').disabled = true;
+            }
+          }
+        });
+      }
+
+      function progress() {
+        document.getElementById("submitValues").value += document.querySelector('#textInput').value.trim().replace(/;/g, ',') + ";";
+
+        var radios = document.querySelectorAll('input[type="radio"]:checked');
+        var textinput = document.querySelector('#skipText').value;
+        var skipReason = "";
+        if (radios.length == 1) {
+          if (radios[0].value == "other") {
+            skipReason = "other: " + textinput.replace(/;/g, ',');
+          } else {
+            skipReason = radios[0].value;
+          }
+        }
+        document.getElementById("submitSkipReason").value += skipReason + ";";
+
+        document.getElementById("buttonNext").disabled = true;
+        document.querySelector('#textInput').value = "";
+        $('#textInput').prop('disabled', true);
+
+        document.getElementById("buttonSkipDo").disabled = true;
+        document.querySelector('#skipText').value = "";
+        $('input[type="radio"]').prop('checked', false);
+        $('input[type="radio"]').prop('disabled', true);
+
+        //if it is the last video, the submit button is activated
+        if (currentVideoIndex === maxVideoNumber) {
+          document.getElementById("submitButton").disabled = false;
+          // make submit button green
+          document.getElementById("submitButton").style.backgroundColor = "#4CAF50";
+          // hide textInput
+          document.getElementById("textInput").style.display = "none";
+          // logs for error handling:
+          console.log(document.getElementById("submitValues").value);
+          console.log(document.getElementById("submitSkipReason").value);
+        } else {
+          nextVideos();
+          document.getElementById("counter").innerHTML = (maxVideoNumber - currentVideoIndex) + " videos left" //displays how many videos are left until the end + counts down
+
+          // reset video completion
+          // videoACompleted = false;
+          // videoBCompleted = false;
+          videoCCompleted = false;
+          createEventListeners();
+          changeSpeed(1);
+        }
+      }
+
+
+      function nextVideos() {
+        if (currentVideoIndex < maxVideoNumber) {
+          var video1Url = videoUrls[currentVideoIndex].split('#')[0];
+          var video2Url = videoUrls[currentVideoIndex].split('#')[1];
+          var video3Url = videoUrls[currentVideoIndex].split('#')[2];
+          // var sim_score = videoUrls[currentVideoIndex].split('#')[3];
+
+          // NOTE: does nothing (since my changes)
+          // document.getElementById("video1_url").value = video1Url;
+          // document.getElementById("video2_url").value = video2Url;
+          // NOTE: does nothing
+          // document.getElementById("action_label").value = document.getElementById("action_label").value;
+
+          document.getElementById("video1").setAttribute("src", video1Url);
+          document.getElementById("video2").setAttribute("src", video2Url);
+          document.getElementById("video3").setAttribute("src", video3Url);
+          // document.getElementById("sim_score").setAttribute("src", sim_score);
+
+          var video1 = document.getElementById("video1");
+          var video2 = document.getElementById("video2");
+          var video3 = document.getElementById("video3");
+          // var sim_score = document.getElementById("sim_score");
+
+          video1.pause();
+          video2.pause();
+          video3.pause();
+
+          // NOTE: does nothing, startTime, endTime not defined
+          // NOTE: pause on end is default
+          // // When the video is loaded, play the specified portion
+          // video1.addEventListener('loadedmetadata', function () {
+          //   video1.currentTime = startTime;
+          //   video1.play();
+          // });
+
+          // // Pause the video1 when it reaches the end time
+          // video1.addEventListener('timeupdate', function () {
+          //   if (video1.currentTime >= endTime) {
+          //     video1.pause();
+          //   }
+          // });
+
+          // // When the video is loaded, play the specified portion
+          // video2.addEventListener('loadedmetadata', function () {
+          //   video2.currentTime = startTime;
+          //   video2.play();
+          // });
+
+          // // Pause the video2 when it reaches the end time
+          // video2.addEventListener('timeupdate', function () {
+          //   if (video2.currentTime >= endTime) {
+          //     video2.pause();
+          //   }
+          // });
+
+          currentVideoIndex++;
+        } else {
+          currentVideoIndex = 0;
+
+          // NOTE: not needed (for actual mturk)
+          // saveTextInputs();
+        }
+      }
+
+      // NOTE: not needed (for actual mturk)
+      // function saveTextInputs() {
+      //   if (textInputs.length === 0) {
+      //     alert("No text inputs to save.");
+      //     return;
+      //   }
+
+      //   // Create an array to hold the text input objects
+      //   var textData = [];
+
+      //   // Iterate over the text inputs and video URLs
+      //   for (var i = 0; i < textInputs.length; i++) {
+      //     var textInput = textInputs[i];
+
+      //     var v1Url = videoUrls1[i];
+      //     var parts1 = v1Url.split('/');
+      //     var v1fname = parts1[parts1.length - 1];
+      //     var video1Url = v1fname.replace(/\.mp4$/, '');
+
+      //     var v2Url = videoUrls2[i];
+      //     var parts2 = v2Url.split('/');
+      //     var v2fname = parts2[parts2.length - 1];
+      //     var video2Url = v2fname.replace(/\.mp4$/, '');
+
+      //     // Create an object with text input and video URLs
+      //     var inputData = {
+      //       text: textInput,
+      //       video1Url: video1Url,
+      //       video2Url: video2Url
+      //     };
+
+      //     // Add the object to the array
+      //     textData.push(inputData);
+      //   }
+
+      //   // Convert the array to JSON string
+      //   var jsonData = JSON.stringify(textData, null, 2);
+
+      //   // Create a Blob object with the JSON data
+      //   var blob = new Blob([jsonData], { type: "application/json;charset=utf-8" });
+
+      //   // Create a downloadable URL for the Blob
+      //   var url = URL.createObjectURL(blob);
+
+      //   // Create a new anchor element
+      //   var anchor = document.createElement("a");
+      //   anchor.href = url;
+      //   anchor.download = "textInputs.json";
+
+      //   // Trigger a click event to prompt the file download
+      //   anchor.click();
+      // }
+
+      function toggleInstructions() {
+        event.preventDefault();
+        var instructionBody = document.getElementById("instructionBody");
+        var collapseButton = document.getElementById("collapseButton");
+
+        instructionsRead = true;
+        $("#mustRead").hide();
+        $("#textInput").trigger("change");
+        $('#skipText').trigger("change");
+
+        if (instructionBody.style.display === "none") {
+          instructionBody.style.display = "block";
+          collapseButton.innerHTML = "Click to collapse";
+        } else {
+          instructionBody.style.display = "none";
+          collapseButton.innerHTML = "Click to expand";
+        }
+      }
+
+      // CHANGE PLAYBACK SPEED FOR THE TASK VIDEOS
+      function changeSpeed(speed) {
+        event.preventDefault();
+
+        var video1 = document.getElementById("video1");
+        var video2 = document.getElementById("video2");
+        var video3 = document.getElementById("video3");
+
+        video1.playbackRate = speed;
+        video2.playbackRate = speed;
+        video3.playbackRate = speed;
+
+        // find buttons by classname and change color for every one
+        var buttons = document.getElementsByClassName("playbackSpeed");
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].style.backgroundColor = "#efefef";
+        }
+        // make button green
+        document.getElementById("playbackSpeed_" + speed).style.backgroundColor = "#ADD8E6";
+      }
+    </script>
+
+    <script>
+      // POPULATE EXAMPLES IN THE INSTRUCTIONS
+      const examples = [
+        {
+          sourceVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/examples/examples_002277_0_120.mp4",
+          targetVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/examples/examples_002369_0_120.mp4",
+          overlaidVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/examples/examples_002277_0_120-002369_0_120.mp4",
+          responseText:
+            ' <br><i>"do it in a smaller circle, and don\'t swing hands"</i> \
+             <br><i>"move slower, in a smaller circle"</i> \
+             <br><i>"take smaller, slower steps in a smaller circle without moving hands"</i>',
+        },
+        {
+          sourceVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_012157_0_120.mp4",
+          targetVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_010710_120_240.mp4",
+          overlaidVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_012157_0_120-010710_120_240.mp4",
+          responseText: 
+            '<br><i>"don\'t unfold your arms"</i> \
+             <br><i>"keep the arms crossed"</i> \
+             <br><i>"cross arms faster and keep them crossed"</i> ',
+        },
+        {
+          sourceVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/examples/source_motion_013513_120_240.mp4",
+          targetVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/examples/target_motion_000671_0_120.mp4",
+          overlaidVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/examples/source_target_motions_013513_120_240-000671_0_120.mp4",
+          responseText:
+            '<br><i>"lie down on left side instead of your back"</i> \
+             <br><i>"turn the body so the left side touches the ground"</i>',
+        },
+        {
+          sourceVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_014298_0_120.mp4",
+          targetVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_002388_0_120.mp4",
+          overlaidVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_014298_0_120-002388_0_120.mp4",
+          responseText:
+            '<br><i>"sit more to the left"</i> \
+             <br><i>"straighten the back after sitting"</i> \
+             <br><i>"step slightly left before sitting and straighten the back"</i>',
+        },
+        {
+          sourceVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/examples/examples_013169_120_240.mp4",
+          targetVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/examples/examples_011353_120_240.mp4",
+          overlaidVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/examples/examples_013169_120_240-011353_120_240.mp4",
+          responseText:
+            '<br><i>"do it like a drunk person who stumbles around"</i> \
+             <br><i>"move in a smaller circle and act like you are losing your balance"</i> \
+             <br><i>"instead of walking in a circle, slowly stumble in the same directions"</i>',
+        },
+        {
+          sourceVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_motion_006692_120_240.mp4",
+          targetVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/target_motion_007084_120_240.mp4",
+          overlaidVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/videos_collection_1/source_target_motions_006692_120_240-007084_120_240.mp4",
+          responseText: "<br>skip the video, select the option: <b>&ltthe 2 videos are too similar&gt</b>",
+          // <br><b>(not enough difference)</b>",
+        },
+        {
+          sourceVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/examples/source_motion_010107_0_120.mp4",
+          targetVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/examples/target_motion_003885_120_240.mp4",
+          overlaidVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/examples/source_target_motions_010107_0_120-003885_120_240.mp4",
+          responseText: "<br>skip the video, select the option: <b>&ltthe 2 videos are too different&gt</b> \
+          <br><b>(too big differences)</b>",
+        },
+        {
+          sourceVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/examples/source_motion_013931_180_270.mp4",
+          targetVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/examples/target_motion_001488_0_90.mp4",
+          overlaidVideo: "https://motion-editing.s3.eu-central-1.amazonaws.com/examples/source_target_motions_013931_180_270-001488_0_90.mp4",
+          responseText: "<br>skip the video, select the option: <b>&ltthe 2 videos are too different&gt</b> \
+          <br>An example description could be: <i>'shoot the ball in the beginning instead of throwing from the chest in the end'</i>, \
+          <br><font color='orange'>but this is too complex, so just skip the video.</font> \
+          <br><b>(too hard to describe the differences, or the description of the differences would be too complicated)</b>",
+        },
+      ];
+
+      examples.forEach((example, i) => {
+        const examplesContainer = document.getElementById('examplesContainer');
+        const oneExampleHTML = `
+          <div style="margin-top: 1.5em">
+            <div class="container3">
+              <div>
+                <video class="exampleVideo" width="320" height="240" controls>
+                  <source src="${example.overlaidVideo}" type="video/mp4">
+                </video>
+              </div>
+              <div>
+                <video class="exampleVideo" width="320" height="240" controls>
+                  <source src="${example.sourceVideo}" type="video/mp4">
+                </video>
+              </div>
+              <div>
+                <video class="exampleVideo" width="320" height="240" controls>
+                  <source src="${example.targetVideo}" type="video/mp4">
+                </video>
+              </div>
+            </div>
+            <p><b>Correct answer alternatives</b>: ${example.responseText}</p>
+          </div>
+        `
+        examplesContainer.innerHTML += oneExampleHTML;
+      })
+
+      // CHANGE PLAYBACK SPEED FOR THE EXAMPLE VIDEOS
+      function changeExampleSpeed(speed) {
+        event.preventDefault();
+
+        var videos = document.getElementsByClassName("exampleVideo");
+        for (var i = 0; i < videos.length; i++) {
+          videos[i].playbackRate = speed;
+        }
+
+        // find buttons by classname and change color for every one
+        var buttons = document.getElementsByClassName("playbackExampleSpeed");
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].style.backgroundColor = "#efefef";
+        }
+        // make button green
+        document.getElementById("playbackExampleSpeed_" + speed).style.backgroundColor = "#ADD8E6";
+      }
+    </script>
+
+    <!-- <script>
+      const video = document.getElementById('video1');
+      const prevFrameBtn = document.getElementById('prevFrameBtn');
+      const nextFrameBtn = document.getElementById('nextFrameBtn');
+
+      // Function to go to the previous frame
+      function goToPreviousFrame() {
+        video.pause();
+        video.currentTime -= 1 / 30; // Assuming video.fps is the frame rate of your video
+      }
+
+      // Function to go to the next frame
+      function goToNextFrame() {
+        video.pause();
+        console.log("current", video.currentTime);
+        console.log("added", 1 / 30);
+        video.currentTime += 1 / 30; // Assuming video.fps is the frame rate of your video
+      }
+
+      // Add click event listeners to the buttons
+      prevFrameBtn.addEventListener('click', goToPreviousFrame);
+      nextFrameBtn.addEventListener('click', goToNextFrame);
+
+      // Add keydown event listener to the document
+      document.addEventListener('keydown', (event) => {
+        const key = event.key;
+
+        // Check if the left arrow key is pressed
+        if (key === 'a') {
+          goToPreviousFrame();
+        }
+
+        // Check if the right arrow key is pressed
+        if (key === 's') {
+          goToNextFrame();
+        }
+      });
+    </script> -->
+</body>
+
+</html>
